@@ -9,7 +9,7 @@ function ConfirmTab({
   return (
     <div
       className="pdf-controls-container"
-      style={{ position: "absolute", bottom: 0, opacity: 0.8 }}
+      style={{ position: "absolute", bottom: 0, opacity: 0.95 }}
     >
       <div className="pdf-controls">
         <Checkbox

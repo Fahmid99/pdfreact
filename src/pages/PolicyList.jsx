@@ -85,8 +85,8 @@ const PolicyList = ({ data }) => {
 
   return (
     <Paper
-      style={{ width: "100%", padding: "16px", margin: "16px 0" }}
-      elevation={0}
+      style={{ width: "100%", padding: "16px", margin: "16px 0", overflow:"auto" }}
+      elevation={0} 
     >
       <Typography variant="h5" style={{ marginBottom: "16px" }}>
         Policy List

@@ -21,9 +21,33 @@ function Sidebar({ data, handleSideBar }) {
   const [open, setOpen] = useState(true);
 
   const links = [
-    { text: "Home", path: "/", icon: <HomeIcon /> },
-    { text: "Inbox", path: "/inbox", icon: <InboxIcon /> },
-    { text: "Policies List", path: "/policieslist", icon: <ListIcon /> },
+    {
+      text: "Home",
+      path: "/",
+      icon: (
+        <Box sx={{ marginRight:"5px", borderRadius: "8px" }}>
+          <HomeIcon />
+        </Box>
+      ),
+    },
+    {
+      text: "Inbox",
+      path: "/inbox",
+      icon: (
+        <Box sx={{ marginRight:"5px", borderRadius: "8px" }}>
+          <InboxIcon />
+        </Box>
+      ),
+    },
+    {
+      text: "Policies List",
+      path: "/policieslist",
+      icon: (
+        <Box sx={{ marginRight:"5px", borderRadius: "8px" }}>
+          <ListIcon />
+        </Box>
+      ),
+    },
   ];
 
   const filteredData = data.filter((data) => !data.readStatus);
@@ -57,8 +81,8 @@ function Sidebar({ data, handleSideBar }) {
         {open && (
           <h1 style={{ fontSize: "24px", margin: "5px" }}>Policies Portal</h1>
         )}
-        <IconButton onClick={handleToggle}>
-          {open ? <CloseIcon /> : <MenuIcon style={{marginLeft:"8px"}} />}
+        <IconButton onClick={handleToggle} style={{ marginLeft: "8px" }}>
+          {open ? <CloseIcon /> : <MenuIcon  />}
         </IconButton>
       </Box>
       <Divider />
@@ -122,11 +146,10 @@ function Sidebar({ data, handleSideBar }) {
                 },
                 display: "flex",
                 alignItems: "center",
+               marginBottom: "10px"
               }}
             >
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                {link.icon}
-              </Box>
+              {link.icon}
             </ListItem>
           ))}
         </List>
