@@ -1,0 +1,60 @@
+{
+  "policies": [
+    {
+      "id": 1,
+      "name": "Policy A",
+      "category": "Health",
+      "readStatus": true,
+      "dateCreated": "2024-08-01"
+    },
+    {
+      "id": 3,
+      "name": "Policy C",
+      "category": "Education",
+      "readStatus": true,
+      "dateCreated": "2024-08-03"
+    },
+    {
+      "id": 4,
+      "name": "Policy D",
+      "category": "Technology",
+      "readStatus": true,
+      "dateCreated": "2024-08-04"
+    },
+    {
+      "id": 5,
+      "name": "Policy E",
+      "category": "Environment",
+      "readStatus": true,
+      "dateCreated": "2024-08-05"
+    },
+    {
+      "id": 7,
+      "name": "Policy G",
+      "category": "Finance",
+      "readStatus": true,
+      "dateCreated": "2024-08-07"
+    },
+    {
+      "id": 9,
+      "name": "Policy I",
+      "category": "Technology",
+      "readStatus": false,
+      "dateCreated": "2024-08-09"
+    },
+    {
+      "id": 11,
+      "name": "Policy K",
+      "category": "Health",
+      "readStatus": true,
+      "dateCreated": "2024-08-11"
+    },
+    {
+      "id": 12,
+      "name": "Policy L",
+      "category": "Finance",
+      "readStatus": false,
+      "dateCreated": "2024-08-12"
+    }
+  ]
+}
