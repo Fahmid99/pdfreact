@@ -3,56 +3,72 @@
     {
       "id": 1,
       "name": "Policy A",
-      "category": "Health",
+      "categories": ["Health", "Management"],
+      "tags": ["urgent", "review"],
+      "policyType": "Security",
       "readStatus": true,
       "dateCreated": "2024-08-01"
     },
     {
       "id": 3,
       "name": "Policy C",
-      "category": "Education",
+      "categories": ["Education", "IT"],
+      "tags": ["important", "update"],
+      "policyType": "Compliance",
       "readStatus": true,
       "dateCreated": "2024-08-03"
     },
     {
       "id": 4,
       "name": "Policy D",
-      "category": "Technology",
+      "categories": ["Technology", "Contracts"],
+      "tags": ["new", "review"],
+      "policyType": "Security",
       "readStatus": true,
       "dateCreated": "2024-08-04"
     },
     {
       "id": 5,
       "name": "Policy E",
-      "category": "Environment",
+      "categories": ["Environment", "Finance"],
+      "tags": ["urgent", "policy"],
+      "policyType": "Regulation",
       "readStatus": true,
       "dateCreated": "2024-08-05"
     },
     {
       "id": 7,
       "name": "Policy G",
-      "category": "Finance",
+      "categories": ["Finance", "Management"],
+      "tags": ["finance", "review"],
+      "policyType": "Security",
       "readStatus": true,
       "dateCreated": "2024-08-07"
     },
     {
       "id": 9,
       "name": "Policy I",
-      "category": "Technology",
+      "categories": ["Technology", "IT"],
+      "tags": ["tech", "update"],
+      "policyType": "Compliance",
       "readStatus": true,
       "dateCreated": "2024-08-09"
     },
     {
       "id": 11,
       "name": "Policy K",
-      "category": "Health",
+      "categories": ["Health", "Business Solutions"],
+      "tags": ["health", "urgent"],
+      "policyType": "Security",
       "readStatus": false,
       "dateCreated": "2024-08-11"
     },
     {
       "id": 12,
       "name": "Policy L",
-      "category": "Finance",
+      "categories": ["Finance", "Marketing"],
+      "tags": ["finance", "marketing"],
+      "policyType": "Regulation",
       "readStatus": false,
       "dateCreated": "2024-08-12"
     }
