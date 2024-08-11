@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import PDFViewer from "./pages/PdfViewer";
+import PdfViewer from "./pages/PdfViewer/PdfViewer";
 import Alert from "@mui/material/Alert";
 import Fade from "@mui/material/Fade"; // Import Fade
 import axios from "axios";
 import Sidebar from "./components/Sidebar";
-import Inbox from "./pages/Inbox";
-import PolicyList from "./pages/PolicyList";
-import intialData from "../dummy.json";
-import Dashboard from "./pages/Dashboard";
+import Inbox from "./pages/Inbox/Inbox";
+import PolicyList from "./pages/PolicyList/PolicyList";
+import intialData from "../data/dummy.json";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import Navbar from "./components/Navbar";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import "./index.css";
@@ -76,12 +76,12 @@ function App() {
               <Route
                 path="/"
                 element={
-                  <Dashboard policies={data.policies} inbox={data.inbox} />
+                  <Dashboard/>
                 }
               />
               <Route
                 path="/policies"
-                element={<PDFViewer handleSubmit={handleSubmit} />}
+                element={<PdfViewer handleSubmit={handleSubmit} />}
               />
               <Route path="/inbox" element={<Inbox data={data} />} />
               <Route
@@ -90,7 +90,7 @@ function App() {
               />
               <Route
                 path="/pdfviewer/:id"
-                element={<PDFViewer handleSubmit={handleSubmit} data={data} />}
+                element={<PdfViewer handleSubmit={handleSubmit} data={data} />}
               />
             </Routes>
           </div>

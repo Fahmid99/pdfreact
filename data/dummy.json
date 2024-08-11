@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Policy A",
-      "categories": ["Health", "Management"],
+      "categories": "Management",
       "tags": ["urgent", "review"],
       "policyType": "Security",
       "readStatus": true,
@@ -12,7 +12,7 @@
     {
       "id": 3,
       "name": "Policy C",
-      "categories": ["Education", "IT"],
+      "categories": "IT",
       "tags": ["important", "update"],
       "policyType": "Compliance",
       "readStatus": true,
@@ -21,7 +21,7 @@
     {
       "id": 4,
       "name": "Policy D",
-      "categories": ["Technology", "Contracts"],
+      "categories": "Contracts",
       "tags": ["new", "review"],
       "policyType": "Security",
       "readStatus": true,
@@ -30,7 +30,7 @@
     {
       "id": 5,
       "name": "Policy E",
-      "categories": ["Environment", "Finance"],
+      "categories": "Environment",
       "tags": ["urgent", "policy"],
       "policyType": "Regulation",
       "readStatus": true,
@@ -39,7 +39,7 @@
     {
       "id": 7,
       "name": "Policy G",
-      "categories": ["Finance", "Management"],
+      "categories": "Finance",
       "tags": ["finance", "review"],
       "policyType": "Security",
       "readStatus": true,
@@ -48,7 +48,7 @@
     {
       "id": 9,
       "name": "Policy I",
-      "categories": ["Technology", "IT"],
+      "categories": "Technology",
       "tags": ["tech", "update"],
       "policyType": "Compliance",
       "readStatus": true,
@@ -57,7 +57,7 @@
     {
       "id": 11,
       "name": "Policy K",
-      "categories": ["Health", "Business Solutions"],
+      "categories": "Business Solutions",
       "tags": ["health", "urgent"],
       "policyType": "Security",
       "readStatus": false,
@@ -66,7 +66,7 @@
     {
       "id": 12,
       "name": "Policy L",
-      "categories": ["Finance", "Marketing"],
+      "categories": "Marketing",
       "tags": ["finance", "marketing"],
       "policyType": "Regulation",
       "readStatus": false,

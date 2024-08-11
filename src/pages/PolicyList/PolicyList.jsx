@@ -21,7 +21,7 @@ import CategoryIcon from "@mui/icons-material/Category";
 import TagIcon from "@mui/icons-material/Label";
 import PolicyTypeIcon from "@mui/icons-material/Policy";
 import SearchIcon from "@mui/icons-material/Search";
-import TagFilter from "../components/TagFilter";
+import TagFilter from "../../components/TagFilter";
 import InputAdornment from "@mui/material/InputAdornment";
 
 const PolicyList = ({ data }) => {
@@ -32,18 +32,24 @@ const PolicyList = ({ data }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedPolicyType, setSelectedPolicyType] = useState("");
   const navigate = useNavigate();
-  const uniqueCategories = [...new Set(data.reduce((acc, policy) => acc.concat(policy.categories), []))];
-  const uniqueTags = [...new Set(data.reduce((acc, policy) => acc.concat(policy.tags), []))];
-  const uniquePolicyTypes = [...new Set(data.map(policy => policy.policyType))];
-  
+  const uniqueCategories = [
+    ...new Set(data.reduce((acc, policy) => acc.concat(policy.categories), [])),
+  ];
+  const uniqueTags = [
+    ...new Set(data.reduce((acc, policy) => acc.concat(policy.tags), [])),
+  ];
+  const uniquePolicyTypes = [
+    ...new Set(data.map((policy) => policy.policyType)),
+  ];
+
   // Create filterButtons array
   const filterButtons = [
     { name: "Categories", data: uniqueCategories },
     { name: "Tags", data: uniqueTags },
-    { name: "Policy Type", data: uniquePolicyTypes }
+    { name: "Policy Type", data: uniquePolicyTypes },
   ];
   const iconStyles = { marginRight: "5px", color: "#757575" };
-console.log(filterButtons[0].data)
+  console.log(filterButtons[0].data);
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -58,27 +64,13 @@ console.log(filterButtons[0].data)
     setSearchQuery(event.target.value);
   };
 
-  const handleDeleteChip = (categoryToDelete) => {
-    setSelectedCategories((categories) =>
-      categories.filter((category) => category !== categoryToDelete)
-    );
-  };
-
-  const handleDeleteTag = (tagToDelete) => {
-    setSelectedTags((tags) =>
-      tags.filter((tag) => tag !== tagToDelete)
-    );
-  };
-
-  const handleDeletePolicyType = () => {
-    setSelectedPolicyType("");
-  };
-
   const filteredData = data.filter(
     (row) =>
       row.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
       (selectedCategories.length === 0 ||
-        selectedCategories.some((category) => row.categories.includes(category))) &&
+        selectedCategories.some((category) =>
+          row.categories.includes(category)
+        )) &&
       (selectedTags.length === 0 ||
         selectedTags.some((tag) => row.tags.includes(tag))) &&
       (selectedPolicyType === "" || row.policyType === selectedPolicyType)
@@ -142,69 +134,6 @@ console.log(filterButtons[0].data)
             }}
           />
         </div>
-
-        {selectedCategories.length > 0 && (
-          <div
-            style={{
-              padding: "16px",
-              marginBottom: "16px",
-              borderRadius: "16px",
-              border: "3px dashed #EEEEEE",
-            }}
-          >
-            <Box>
-              {selectedCategories.map((category) => (
-                <Chip
-                  key={category}
-                  label={category}
-                  onDelete={() => handleDeleteChip(category)}
-                  style={{ margin: "4px" }}
-                />
-              ))}
-            </Box>
-          </div>
-        )}
-
-        {selectedTags.length > 0 && (
-          <div
-            style={{
-              padding: "16px",
-              marginBottom: "16px",
-              borderRadius: "16px",
-              border: "3px dashed #EEEEEE",
-            }}
-          >
-            <Box>
-              {selectedTags.map((tag) => (
-                <Chip
-                  key={tag}
-                  label={tag}
-                  onDelete={() => handleDeleteTag(tag)}
-                  style={{ margin: "4px" }}
-                />
-              ))}
-            </Box>
-          </div>
-        )}
-
-        {selectedPolicyType && (
-          <div
-            style={{
-              padding: "16px",
-              marginBottom: "16px",
-              borderRadius: "16px",
-              border: "3px dashed #EEEEEE",
-            }}
-          >
-            <Box>
-              <Chip
-                label={selectedPolicyType}
-                onDelete={handleDeletePolicyType}
-                style={{ margin: "4px" }}
-              />
-            </Box>
-          </div>
-        )}
 
         <Table>
           <TableHead>
@@ -274,7 +203,7 @@ console.log(filterButtons[0].data)
                     }}
                   />
                 </TableCell>
-                <TableCell>{row.categories.join(", ")}</TableCell>
+                <TableCell>{row.categories}</TableCell>
                 <TableCell>{row.tags.join(", ")}</TableCell>
                 <TableCell>{row.policyType}</TableCell>
               </TableRow>

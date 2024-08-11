@@ -1,21 +1,21 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import Pdf from "../components/Pdf";
-import IntroDivider from "../components/PdfInfoCard";
+import Pdf from "./components/Pdf";
+import IntroDivider from "./components/PdfInfoCard";
 import { pdfjs } from "react-pdf";
 import base64Content from "./base64Content.txt?raw";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import Card from "@mui/material/Card"; // Import Card component
-import ConfirmTab from "../components/ConfirmTab";
-import PdfControls from "../components/PdfControls";
+import ConfirmTab from "./components/ConfirmTab";
+import PdfControls from "../../components/PdfControls";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
 ).toString();
 
-const PDFViewer = ({ handleSubmit, data }) => {
+const PdfViewer = ({ handleSubmit, data }) => {
   const { id } = useParams();
   const policy = data.find((p) => p.id === parseInt(id));
 
@@ -69,7 +69,6 @@ const PDFViewer = ({ handleSubmit, data }) => {
         numPages={numPages}
         submitDisabled={submitDisabled}
         handleSubmit={handleSubmit}
-        handleSubmitDisabled={handleSubmitDisabled}
         handleZoomIn={handleZoomIn}
         handleZoomOut={handleZoomOut}
       />
@@ -128,4 +127,4 @@ const PDFViewer = ({ handleSubmit, data }) => {
   );
 };
 
-export default PDFViewer;
+export default PdfViewer;

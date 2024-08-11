@@ -1,17 +1,7 @@
-import React from "react";
-import {
-  Box,
-  Grid,
-  Paper,
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-  Button,
-} from "@mui/material";
+import { Box, Grid, Paper, Typography, List, Button } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
-function Dashboard({ policies, inbox }) {
+function Dashboard() {
   return (
     <Box sx={{ padding: "20px" }}>
       <Grid container spacing={3}>
