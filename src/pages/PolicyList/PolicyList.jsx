@@ -1,36 +1,18 @@
-import { useState, useRef } from "react";
-import {
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableSortLabel,
-  Paper,
-  TextField,
-  Chip,
-  Box,
-  Divider,
-  Typography,
-} from "@mui/material";
+import { useState, useEffect } from "react";
+import { Paper, Divider, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import PolicyIcon from "@mui/icons-material/Description";
-import DateIcon from "@mui/icons-material/CalendarToday";
-import ReadStatusIcon from "@mui/icons-material/Visibility";
-import CategoryIcon from "@mui/icons-material/Category";
-import TagIcon from "@mui/icons-material/Label";
-import PolicyTypeIcon from "@mui/icons-material/Policy";
-import SearchIcon from "@mui/icons-material/Search";
-import TagFilter from "../../components/TagFilter";
-import InputAdornment from "@mui/material/InputAdornment";
+
+import PolicyTable from "./components/PolicyTable";
+import Filters from "../../components/Filters";
 
 const PolicyList = ({ data }) => {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("dateCreated");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedPolicyType, setSelectedPolicyType] = useState("");
+  const [newFilteredData, setNewFilteredData] = useState(data);
+
   const navigate = useNavigate();
   const uniqueCategories = [
     ...new Set(data.reduce((acc, policy) => acc.concat(policy.categories), [])),
@@ -44,12 +26,34 @@ const PolicyList = ({ data }) => {
 
   // Create filterButtons array
   const filterButtons = [
-    { name: "Categories", data: uniqueCategories },
-    { name: "Tags", data: uniqueTags },
-    { name: "Policy Type", data: uniquePolicyTypes },
+    { name: "Categories", data: uniqueCategories ,keyName: "categories" },
+    { name: "Tags", data: uniqueTags, keyName: "tags"},
+    { name: "Policy Type", data: uniquePolicyTypes, keyName: "policyType" },
   ];
-  const iconStyles = { marginRight: "5px", color: "#757575" };
-  console.log(filterButtons[0].data);
+
+  const handleFilterChange = (givenArray) => {
+    let filteredData = [];
+    // Iterate through each object in the given array
+    for (const givenObject of givenArray) {
+      // Filter policies based on the given object's properties
+      const matchingPolicies = data.filter((policy) =>
+        Object.keys(givenObject).every(
+          (key) => policy[key] === givenObject[key]
+        )
+      );
+      // Add matching policies to the filteredData array
+      filteredData.push(...matchingPolicies);
+  
+    }
+    setNewFilteredData(filteredData);
+  };
+
+  useEffect(() => {
+    if (newFilteredData.length > 0) {
+      console.log(newFilteredData);
+    }
+  }, [newFilteredData]);
+
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -64,19 +68,7 @@ const PolicyList = ({ data }) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredData = data.filter(
-    (row) =>
-      row.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (selectedCategories.length === 0 ||
-        selectedCategories.some((category) =>
-          row.categories.includes(category)
-        )) &&
-      (selectedTags.length === 0 ||
-        selectedTags.some((tag) => row.tags.includes(tag))) &&
-      (selectedPolicyType === "" || row.policyType === selectedPolicyType)
-  );
-
-  const sortedData = filteredData.sort((a, b) => {
+  const sortedData = newFilteredData.sort((a, b) => {
     if (orderBy === "dateCreated") {
       return order === "asc"
         ? new Date(a[orderBy]) - new Date(b[orderBy])
@@ -112,104 +104,20 @@ const PolicyList = ({ data }) => {
           background: "white",
         }}
       >
-        <div style={{ display: "flex", marginBottom: "10px" }}>
-          {filterButtons.map((filterObj) => (
-            <div key={filterObj.name}>
-              <TagFilter filterObj={filterObj} />
-            </div>
-          ))}
-          <TextField
-            placeholder="Search by Policy Name"
-            variant="outlined"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            style={{ width: "20%", marginTop: "2px" }}
-            size="small"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-
-        <Table>
-          <TableHead>
-            <TableRow style={{ background: "#f5f5f5" }}>
-              {[
-                {
-                  id: "name",
-                  label: "Policy",
-                  icon: <PolicyIcon style={iconStyles} />,
-                },
-                {
-                  id: "dateCreated",
-                  label: "Date Created",
-                  icon: <DateIcon style={iconStyles} />,
-                },
-                {
-                  id: "readStatus",
-                  label: "Read Status",
-                  icon: <ReadStatusIcon style={iconStyles} />,
-                },
-                {
-                  id: "categories",
-                  label: "Categories",
-                  icon: <CategoryIcon style={iconStyles} />,
-                },
-                {
-                  id: "tags",
-                  label: "Tags",
-                  icon: <TagIcon style={iconStyles} />,
-                },
-                {
-                  id: "policyType",
-                  label: "Policy Type",
-                  icon: <PolicyTypeIcon style={iconStyles} />,
-                },
-              ].map((headCell) => (
-                <TableCell key={headCell.id}>
-                  <TableSortLabel
-                    active={orderBy === headCell.id}
-                    direction={orderBy === headCell.id ? order : "asc"}
-                    onClick={() => handleRequestSort(headCell.id)}
-                  >
-                    {headCell.icon}
-                    {headCell.label}
-                  </TableSortLabel>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {sortedData.map((row) => (
-              <TableRow
-                key={row.id}
-                hover
-                onClick={() => handleRowClick(row.id)}
-                style={{ cursor: "pointer" }}
-              >
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.dateCreated}</TableCell>
-                <TableCell>
-                  <Chip
-                    label={row.readStatus ? "Complete" : "Incomplete"}
-                    style={{
-                      width: "100px",
-                      backgroundColor: row.readStatus ? "#2196f3" : "#ef5350",
-                      color: "white",
-                    }}
-                  />
-                </TableCell>
-                <TableCell>{row.categories}</TableCell>
-                <TableCell>{row.tags.join(", ")}</TableCell>
-                <TableCell>{row.policyType}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <Filters
+          filterButtons={filterButtons}
+          searchQuery={searchQuery}
+          handleSearchChange={handleSearchChange}
+          handleFilterChange={handleFilterChange}
+          setSelectedTags={setSelectedTags}
+        />
+        <PolicyTable
+          orderBy={orderBy}
+          handleRequestSort={handleRequestSort}
+          sortedData={sortedData}
+          handleRowClick={handleRowClick}
+          order={order}
+        />
       </div>
     </Paper>
   );

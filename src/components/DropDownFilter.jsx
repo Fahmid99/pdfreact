@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Box,
   Button,
@@ -12,6 +12,7 @@ import {
 import CheckIcon from "@mui/icons-material/Check";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { Category } from "@mui/icons-material";
 
 const listStyle = {
   maxHeight: 200,
@@ -21,30 +22,81 @@ const listStyle = {
   width: "500px",
 };
 
-export default function TagFilter({ filterObj }) {
+export default function DropDownFilter({
+  filterObj,
+  handleFilterChange,
+  newSelectedTags,
+  setNewSelectedTags,
+}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
+  const shouldRunEffect = useRef(false);
   const listRef = useRef(null);
   const tags = filterObj?.data || [];
 
   const handleOpen = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
-  const handleClear = () => setSelectedTags([]);
+  const handleClear = () => {
+    setSelectedTags([]);
+    setNewSelectedTags(selectedTags);
+  };
   const handleSearchChange = (event) => setSearchTerm(event.target.value);
 
   const handleToggle = (tag) => {
-    const scrollPosition = listRef.current.scrollTop;
     setSelectedTags((prevSelectedTags) =>
       prevSelectedTags.includes(tag)
         ? prevSelectedTags.filter((t) => t !== tag)
         : [...prevSelectedTags, tag]
     );
-    setTimeout(() => {
-      listRef.current.scrollTop = scrollPosition;
-    }, 0);
+
+    let givenArray = [...newSelectedTags]; // Make a copy of the array
+
+    const newObject = { ...givenArray[0] }; // Create a copy of the selected object
+    const newArray = [];
+    // Update the selected key with the new value
+    newObject[filterObj.keyName] = tag;
+    if (
+      givenArray.length !== 0 &&
+      givenArray[givenArray.length - 1][filterObj.keyName] === undefined
+    ) {
+      for (let i = 0; i < givenArray.length; i++) {
+        givenArray[i][filterObj.keyName] = tag;
+      }
+    } else if (
+      givenArray.length !== 0 &&
+      givenArray[givenArray.length - 1][filterObj.keyName] === "test"
+    ) {
+      for (let i = 0; i < givenArray.length; i++) {
+        let copyObject = { ...givenArray[i] };
+        copyObject[filterObj.keyName] = tag;
+
+        newArray.push(copyObject);
+      }
+      givenArray = newArray;
+      
+    } else {
+      givenArray.push(newObject);
+    }
+
+    console.log(givenArray);
+    // Append the new object to the array
+
+    // Set the updated array
+    setNewSelectedTags(givenArray);
+
+    shouldRunEffect.current = true;
+    // handleFilterChange(newSelectedTags);
   };
 
+  useEffect(() => {
+    // Check if the flag is true before running the effect
+    if (shouldRunEffect.current) {
+      handleFilterChange(newSelectedTags);
+      // Reset the flag after running the effect
+      shouldRunEffect.current = false;
+    }
+  }, [newSelectedTags]);
   const filteredTags = tags.filter((tag) =>
     tag.toLowerCase().includes(searchTerm.toLowerCase())
   );
