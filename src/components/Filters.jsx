@@ -11,7 +11,7 @@ function Filters({
   handleFilterChange,
   setSelectedTags,
 }) {
-  const [newSelectedTags, setNewSelectedTags] = useState([]);
+  const [newSelectedTags, setNewSelectedTags] = useState({});
   return (
     <div style={{ display: "flex", marginBottom: "10px" }}>
       {filterButtons.map((filterObj) => (

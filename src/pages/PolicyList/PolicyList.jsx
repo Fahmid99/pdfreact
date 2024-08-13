@@ -26,25 +26,38 @@ const PolicyList = ({ data }) => {
 
   // Create filterButtons array
   const filterButtons = [
-    { name: "Categories", data: uniqueCategories ,keyName: "categories" },
-    { name: "Tags", data: uniqueTags, keyName: "tags"},
+    { name: "Categories", data: uniqueCategories, keyName: "categories" },
+    { name: "Tags", data: uniqueTags, keyName: "tags" },
     { name: "Policy Type", data: uniquePolicyTypes, keyName: "policyType" },
   ];
 
   const handleFilterChange = (givenArray) => {
-    let filteredData = [];
-    // Iterate through each object in the given array
-    for (const givenObject of givenArray) {
-      // Filter policies based on the given object's properties
-      const matchingPolicies = data.filter((policy) =>
-        Object.keys(givenObject).every(
-          (key) => policy[key] === givenObject[key]
-        )
-      );
-      // Add matching policies to the filteredData array
-      filteredData.push(...matchingPolicies);
-  
-    }
+    // let filteredData = [];
+    // // Iterate through each object in the given array
+    // for (const givenObject of givenArray) {
+    //   // Filter policies based on the given object's properties
+    //   const matchingPolicies = data.filter((policy) =>
+    //     Object.keys(givenObject).every(
+    //       (key) => policy[key] === givenObject[key]
+    //     )
+    //   );
+    //   // Add matching policies to the filteredData array
+    //   filteredData.push(...matchingPolicies);
+
+    // }
+
+    const filteredData = data.filter((item) => {
+      if (Object.keys(givenArray).length > 0) {
+        for (let key in givenArray) {
+          if (item[key] === undefined || !givenArray[key].includes(item[key])) {
+            return false;
+          }
+        }
+      }
+      return true;
+    });
+
+    console.log(filteredData);
     setNewFilteredData(filteredData);
   };
 

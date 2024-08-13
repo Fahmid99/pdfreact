@@ -34,56 +34,43 @@ export default function DropDownFilter({
   const shouldRunEffect = useRef(false);
   const listRef = useRef(null);
   const tags = filterObj?.data || [];
-
+  const givenObject = newSelectedTags;
   const handleOpen = (event) => setAnchorEl(event.currentTarget);
-  const handleClose = () => setAnchorEl(null);
+  const handleClose = () => {
+    setAnchorEl(null);
+
+  };
   const handleClear = () => {
-    setSelectedTags([]);
-    setNewSelectedTags(selectedTags);
+    
+    let copyObject = givenObject
+    
+    setNewSelectedTags();
+
   };
   const handleSearchChange = (event) => setSearchTerm(event.target.value);
 
   const handleToggle = (tag) => {
+    // Create a new object based on newSelectedTags
+    const updatedGivenObject = { ...newSelectedTags };
+
     setSelectedTags((prevSelectedTags) =>
       prevSelectedTags.includes(tag)
         ? prevSelectedTags.filter((t) => t !== tag)
         : [...prevSelectedTags, tag]
     );
 
-    let givenArray = [...newSelectedTags]; // Make a copy of the array
-
-    const newObject = { ...givenArray[0] }; // Create a copy of the selected object
-    const newArray = [];
-    // Update the selected key with the new value
-    newObject[filterObj.keyName] = tag;
-    if (
-      givenArray.length !== 0 &&
-      givenArray[givenArray.length - 1][filterObj.keyName] === undefined
-    ) {
-      for (let i = 0; i < givenArray.length; i++) {
-        givenArray[i][filterObj.keyName] = tag;
-      }
-    } else if (
-      givenArray.length !== 0 &&
-      givenArray[givenArray.length - 1][filterObj.keyName] === "test"
-    ) {
-      for (let i = 0; i < givenArray.length; i++) {
-        let copyObject = { ...givenArray[i] };
-        copyObject[filterObj.keyName] = tag;
-
-        newArray.push(copyObject);
-      }
-      givenArray = newArray;
-      
+    if (updatedGivenObject[filterObj.keyName] === undefined) {
+      updatedGivenObject[filterObj.keyName] = [tag];
     } else {
-      givenArray.push(newObject);
+      updatedGivenObject[filterObj.keyName] = [
+        ...updatedGivenObject[filterObj.keyName],
+        tag,
+      ];
     }
 
-    console.log(givenArray);
-    // Append the new object to the array
-
+    console.log(updatedGivenObject);
     // Set the updated array
-    setNewSelectedTags(givenArray);
+    setNewSelectedTags(updatedGivenObject);
 
     shouldRunEffect.current = true;
     // handleFilterChange(newSelectedTags);
