@@ -12,7 +12,6 @@ import {
 import CheckIcon from "@mui/icons-material/Check";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { Category } from "@mui/icons-material";
 
 const listStyle = {
   maxHeight: 200,
@@ -25,8 +24,8 @@ const listStyle = {
 export default function DropDownFilter({
   filterObj,
   handleFilterChange,
-  newSelectedTags,
-  setNewSelectedTags,
+  filterQuery,
+  setfilterQuery,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,56 +33,63 @@ export default function DropDownFilter({
   const shouldRunEffect = useRef(false);
   const listRef = useRef(null);
   const tags = filterObj?.data || [];
-  const givenObject = newSelectedTags;
+
   const handleOpen = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => {
     setAnchorEl(null);
-
   };
+
   const handleClear = () => {
-    
-    let copyObject = givenObject
-    
-    setNewSelectedTags();
-
-  };
-  const handleSearchChange = (event) => setSearchTerm(event.target.value);
-
-  const handleToggle = (tag) => {
-    // Create a new object based on newSelectedTags
-    const updatedGivenObject = { ...newSelectedTags };
-
-    setSelectedTags((prevSelectedTags) =>
-      prevSelectedTags.includes(tag)
-        ? prevSelectedTags.filter((t) => t !== tag)
-        : [...prevSelectedTags, tag]
-    );
-
-    if (updatedGivenObject[filterObj.keyName] === undefined) {
-      updatedGivenObject[filterObj.keyName] = [tag];
-    } else {
-      updatedGivenObject[filterObj.keyName] = [
-        ...updatedGivenObject[filterObj.keyName],
-        tag,
-      ];
-    }
-
-    console.log(updatedGivenObject);
-    // Set the updated array
-    setNewSelectedTags(updatedGivenObject);
-
+    let copyObject = { ...filterQuery };
+    delete copyObject[filterObj.keyName];
+    setSelectedTags([]);
+    setfilterQuery(copyObject);
     shouldRunEffect.current = true;
-    // handleFilterChange(newSelectedTags);
   };
 
   useEffect(() => {
     // Check if the flag is true before running the effect
-    if (shouldRunEffect.current) {
-      handleFilterChange(newSelectedTags);
-      // Reset the flag after running the effect
-      shouldRunEffect.current = false;
-    }
-  }, [newSelectedTags]);
+    handleFilterChange(filterQuery);
+    // Reset the flag after running the effect
+  }, [filterQuery, handleFilterChange]);
+
+  const handleSearchChange = (event) => setSearchTerm(event.target.value);
+
+  const handleToggle = (tag) => {
+    setSelectedTags((prevSelectedTags) => {
+      const tagsIncluded = prevSelectedTags.includes(tag);
+      const filterQuery = tagsIncluded
+        ? prevSelectedTags.filter((t) => t !== tag)
+        : [...prevSelectedTags, tag];
+
+      setfilterQuery((prevNewSelectedTags) => {
+        let updatedGivenObject = { ...prevNewSelectedTags };
+
+        if (!tagsIncluded) {
+          if (!updatedGivenObject[filterObj.keyName]) {
+            updatedGivenObject[filterObj.keyName] = [tag];
+          } else {
+            updatedGivenObject[filterObj.keyName].push(tag);
+          }
+        } else {
+          updatedGivenObject[filterObj.keyName] = updatedGivenObject[
+            filterObj.keyName
+          ].filter((t) => t !== tag);
+        }
+
+        // If the updated tags array is empty, delete the key from the object
+        if (updatedGivenObject[filterObj.keyName].length === 0) {
+          delete updatedGivenObject[filterObj.keyName];
+        }
+
+        return updatedGivenObject;
+      });
+
+      return filterQuery;
+    });
+    shouldRunEffect.current = true;
+  };
+
   const filteredTags = tags.filter((tag) =>
     tag.toLowerCase().includes(searchTerm.toLowerCase())
   );

@@ -9,9 +9,8 @@ function Filters({
   searchQuery,
   handleSearchChange,
   handleFilterChange,
-  setSelectedTags,
 }) {
-  const [newSelectedTags, setNewSelectedTags] = useState({});
+  const [filterQuery, setfilterQuery] = useState({});
   return (
     <div style={{ display: "flex", marginBottom: "10px" }}>
       {filterButtons.map((filterObj) => (
@@ -19,8 +18,8 @@ function Filters({
           <DropDownFilter
             filterObj={filterObj}
             handleFilterChange={handleFilterChange}
-            newSelectedTags={newSelectedTags}
-            setNewSelectedTags={setNewSelectedTags}
+            filterQuery={filterQuery}
+            setfilterQuery={setfilterQuery}
           />
         </div>
       ))}
