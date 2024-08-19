@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import PdfViewer from "./pages/PdfViewer/PdfViewer";
 import Alert from "@mui/material/Alert";
 import Fade from "@mui/material/Fade"; // Import Fade
@@ -26,7 +31,7 @@ function App() {
     };
 
     axios
-      .put(`http://localhost:3001/policies/${id}`, updatedData)
+      .put(`http://localhost:3002/policies/${id}`, updatedData)
       .then((response) => {
         console.log("Data updated successfully:", response.data);
         setShowSuccess(true);
@@ -73,12 +78,7 @@ function App() {
             }}
           >
             <Routes>
-              <Route
-                path="/"
-                element={
-                  <Dashboard/>
-                }
-              />
+              <Route path="/" element={<Dashboard data={data} />} />
               <Route
                 path="/policies"
                 element={<PdfViewer handleSubmit={handleSubmit} />}

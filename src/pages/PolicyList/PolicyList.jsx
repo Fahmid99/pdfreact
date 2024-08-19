@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Paper, Divider, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -14,52 +14,48 @@ const PolicyList = ({ data }) => {
   const [newFilteredData, setNewFilteredData] = useState(data);
 
   const navigate = useNavigate();
-  const uniqueCategories = [
-    ...new Set(data.reduce((acc, policy) => acc.concat(policy.categories), [])),
-  ];
-  const uniqueTags = [
-    ...new Set(data.reduce((acc, policy) => acc.concat(policy.tags), [])),
-  ];
-  const uniquePolicyTypes = [
-    ...new Set(data.map((policy) => policy.policyType)),
-  ];
 
-  // Create filterButtons array
-  const filterButtons = [
+  const uniqueCategories = useMemo(() => [
+    ...new Set(data.reduce((acc, policy) => acc.concat(policy.categories), [])),
+  ], [data]);
+
+  const uniqueTags = useMemo(() => [
+    ...new Set(data.reduce((acc, policy) => acc.concat(policy.tags), [])),
+  ], [data]);
+
+  const uniquePolicyTypes = useMemo(() => [
+    ...new Set(data.map((policy) => policy.policyType)),
+  ], [data]);
+
+  const filterButtons = useMemo(() => [
     { name: "Categories", data: uniqueCategories, keyName: "categories" },
     { name: "Tags", data: uniqueTags, keyName: "tags" },
     { name: "Policy Type", data: uniquePolicyTypes, keyName: "policyType" },
-  ];
+  ], [uniqueCategories, uniqueTags, uniquePolicyTypes]);
 
-  const handleFilterChange = (givenArray) => {
-    // let filteredData = [];
-    // // Iterate through each object in the given array
-    // for (const givenObject of givenArray) {
-    //   // Filter policies based on the given object's properties
-    //   const matchingPolicies = data.filter((policy) =>
-    //     Object.keys(givenObject).every(
-    //       (key) => policy[key] === givenObject[key]
-    //     )
-    //   );
-    //   // Add matching policies to the filteredData array
-    //   filteredData.push(...matchingPolicies);
-
-    // }
-
+  const handleFilterChange = useCallback((givenArray) => {
     const filteredData = data.filter((item) => {
       if (Object.keys(givenArray).length > 0) {
         for (let key in givenArray) {
-          if (item[key] === undefined || !givenArray[key].includes(item[key])) {
+          if (item[key] === undefined) {
             return false;
+          }
+          if (Array.isArray(item[key])) {
+            if (!item[key].some(tag => givenArray[key].includes(tag))) {
+              return false;
+            }
+          } else {
+            if (!givenArray[key].includes(item[key])) {
+              return false;
+            }
           }
         }
       }
       return true;
     });
 
-    console.log(filteredData);
     setNewFilteredData(filteredData);
-  };
+  }, [data]);
 
   useEffect(() => {
     if (newFilteredData.length > 0) {
@@ -81,23 +77,24 @@ const PolicyList = ({ data }) => {
     setSearchQuery(event.target.value);
   };
 
-  const sortedData = newFilteredData.sort((a, b) => {
-    if (orderBy === "dateCreated") {
+  const sortedData = useMemo(() => {
+    return newFilteredData.sort((a, b) => {
+      if (orderBy === "dateCreated") {
+        return order === "asc"
+          ? new Date(a[orderBy]) - new Date(b[orderBy])
+          : new Date(b[orderBy]) - new Date(a[orderBy]);
+      }
       return order === "asc"
-        ? new Date(a[orderBy]) - new Date(b[orderBy])
-        : new Date(b[orderBy]) - new Date(a[orderBy]);
-    }
-    return order === "asc"
-      ? a[orderBy].localeCompare(b[orderBy])
-      : b[orderBy].localeCompare(a[orderBy]);
-  });
+        ? a[orderBy].localeCompare(b[orderBy])
+        : b[orderBy].localeCompare(a[orderBy]);
+    });
+  }, [newFilteredData, order, orderBy]);
 
   return (
     <Paper
       style={{
         width: "100%",
         padding: "16px",
-        margin: "16px 0",
         overflow: "auto",
         background: "#F8FAFC",
         height: "100%",

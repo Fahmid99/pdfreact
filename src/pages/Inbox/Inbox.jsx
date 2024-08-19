@@ -16,7 +16,7 @@ function Inbox({ data }) {
   };
 
   return (
-    <div style={{ padding: "16px", width: "100%" ,  margin: "16px 0" }}>
+    <div style={{ padding: "16px", width: "100%" }}>
       <Typography variant="h5" style={{ marginBottom: "16px", textAlign: "left" }}>
         Inbox
       </Typography>

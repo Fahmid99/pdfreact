@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import {
   Box,
   Button,
+  IconButton,
   List,
   ListItem,
   ListItemText,
@@ -12,6 +13,7 @@ import {
 import CheckIcon from "@mui/icons-material/Check";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { Close } from "@mui/icons-material";
 
 const listStyle = {
   maxHeight: 200,
@@ -39,7 +41,8 @@ export default function DropDownFilter({
     setAnchorEl(null);
   };
 
-  const handleClear = () => {
+  const handleClear = (e) => {
+    e.stopPropagation()
     let copyObject = { ...filterQuery };
     delete copyObject[filterObj.keyName];
     setSelectedTags([]);
@@ -118,7 +121,30 @@ export default function DropDownFilter({
         <Typography sx={{ fontSize: "14px", padding: "2px" }}>
           {filterObj.name}
         </Typography>
-        <ArrowDropDownIcon sx={{ fontSize: "15px" }} />
+        {selectedTags.length > 0 && (
+          <Box
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+              padding: "0 6px",
+              backgroundColor: "rgba(255, 255, 255, 0.2)",
+              borderRadius: "10px",
+              marginLeft: "5px",
+            }}
+          >
+            <Typography sx={{ fontSize: "12px", fontWeight:"bold" }}>
+              {selectedTags.length} Selected
+            </Typography>
+          </Box>
+        )}
+        <ArrowDropDownIcon sx={{ fontSize: "18px" }} />
+        {selectedTags.length > 0 && (
+          <IconButton onClick={handleClear} size="small" sx={{  "&:hover": {
+            background: "#992a08", // Change to your desired hover color
+          },}}>
+            <Close sx={{fontSize: "14px", color:"white"}} />
+          </IconButton>
+        )}
       </Button>
       <Menu
         anchorEl={anchorEl}

@@ -15,6 +15,7 @@ import InboxIcon from "@mui/icons-material/Inbox";
 import ListIcon from "@mui/icons-material/List";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 
 function Sidebar({ data, handleSideBar }) {
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -82,7 +83,7 @@ function Sidebar({ data, handleSideBar }) {
           <h1 style={{ fontSize: "24px", margin: "5px" }}>Policies Portal</h1>
         )}
         <IconButton onClick={handleToggle} style={{ marginLeft: "8px" }}>
-          {open ? <CloseIcon /> : <MenuIcon  />}
+          {open ? <KeyboardDoubleArrowLeftIcon /> : <MenuIcon  />}
         </IconButton>
       </Box>
       <Divider />

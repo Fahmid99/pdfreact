@@ -1,8 +1,9 @@
-import { TextField } from "@mui/material";
+import { TextField, Button } from "@mui/material";
 import { useState } from "react";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import DropDownFilter from "./DropDownFilter";
+
 
 function Filters({
   filterButtons,
@@ -11,6 +12,7 @@ function Filters({
   handleFilterChange,
 }) {
   const [filterQuery, setfilterQuery] = useState({});
+  
   return (
     <div style={{ display: "flex", marginBottom: "10px" }}>
       {filterButtons.map((filterObj) => (
@@ -28,7 +30,6 @@ function Filters({
         variant="outlined"
         value={searchQuery}
         onChange={handleSearchChange}
-        style={{ width: "20%", marginTop: "2px" }}
         size="small"
         InputProps={{
           startAdornment: (
@@ -36,6 +37,29 @@ function Filters({
               <SearchIcon />
             </InputAdornment>
           ),
+        }}
+        sx={{
+          marginLeft: "auto", 
+          width: "20%",
+          marginTop: "2px",
+          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)", // Default box shadow
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              border: "none", // Remove border
+            },
+            "&:hover fieldset": {
+              border: "none", // Remove border on hover
+            },
+            "&.Mui-focused fieldset": {
+              border: "none", // Remove border on focus
+            },
+          },
+          "&:hover": {
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)", // Increased box shadow on hover
+          },
+          "&.Mui-focused": {
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)", // Maintain increased box shadow on focus
+          },
         }}
       />
     </div>
